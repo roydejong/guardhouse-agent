@@ -1,0 +1,9 @@
+{
+    "guardhouse": {
+        "token": "",
+        "server": "https://agent.guardhou.se"
+    },
+    "logging": {
+        "path": "agent.log"
+    }
+}
