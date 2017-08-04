@@ -14,20 +14,15 @@ let logValue = 'Not set up';
 
 if (loggingConfig.path) {
     try {
-        logging.configure({
-            transports: [
-                new (winston.transports.File)({
-                    filename: loggingConfig.path,
-                    level: 'info',
-                    json: false
-                }),
-                new (winston.transports.Console)()
-            ]
+        logging.add(winston.transports.File, {
+            filename: loggingConfig.path,
+            level: 'info',
+            json: false
         });
 
         logValue = loggingConfig.path;
     } catch (e) {
-        logging.error('Unable to open log file:', e);
+        logging.error('Unable to prepare log file:', e);
     }
 }
 
