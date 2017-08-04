@@ -4,6 +4,10 @@
         "server": "https://agent.guardhou.se",
         "allow_unsafe": false
     },
+    "server": {
+        "enabled": true,
+        "port": "3012"
+    },
     "logging": {
         "path": "agent.log"
     }

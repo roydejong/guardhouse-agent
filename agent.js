@@ -76,4 +76,4 @@ if (abortStart) {
 const net = require('./net');
 
 // Start network (push [server to receive events] & pull [scheduled fetch from server])
-net.startListener();
+net.server.start();

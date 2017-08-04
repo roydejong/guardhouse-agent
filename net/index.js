@@ -1,5 +1,3 @@
-const server = require('./server');
-
 module.exports = {
-    startListener: server.start    
+    server: require('./server')
 };
