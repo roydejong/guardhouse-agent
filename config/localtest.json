@@ -1,0 +1,10 @@
+{
+  "guardhouse": {
+    "token": "LOCALHOST_TOKEN_TEST",
+    "server": "https://localhost",
+    "allow_unsafe": true
+  },
+  "logging": {
+    "path": "agent.localhost.log"
+  }
+}
