@@ -7,7 +7,7 @@ const config = require('config');
 
 // Initiate startup, read config and set up logging
 const serverUrl = config.get('guardhouse.server');
-const accessToken = config.get('guardhouse.token');
+const clientToken = config.get('guardhouse.token_client');
 const loggingConfig = config.get('logging');
 
 let logValue = 'Not set up';
@@ -28,28 +28,28 @@ if (loggingConfig.path) {
 
 logging.info('Guardhouse Agent is starting...');
 
-let accessTokenMasked = 'Not set';
+let clientTokenMasked = 'Not set';
 
-if (accessToken) {
-    accessTokenMasked = '';
+if (clientToken) {
+    clientTokenMasked = '';
     
-    for (let i = 0; i < accessToken.length; i++) {
-        if (i >= (accessToken.length - 6)) {
-            accessTokenMasked += accessToken[i];
+    for (let i = 0; i < clientToken.length; i++) {
+        if (i >= (clientToken.length - 6)) {
+            clientTokenMasked += clientToken[i];
         } else {
-            accessTokenMasked += '*';    
+            clientTokenMasked += '*';    
         }
     }
 }
 
 logging.info(' - Node environment: ' + (process.env.NODE_ENV ? process.env.NODE_ENV : 'default (Not provided)'));
 logging.info(' - Target server:', serverUrl);
-logging.info(' - Access token:', accessTokenMasked);
+logging.info(' - Client token:', clientTokenMasked);
 logging.info(' - Log target:', logValue);
 
 let abortStart = false;
 
-if (!serverUrl || !accessToken || accessToken.length < 8) {
+if (!serverUrl || !clientToken || clientToken.length < 8) {
     logging.error('Configuration problem: Core configuration is missing.');
     logging.error(' - Please ensure that a valid target server and access token (min length: 8) are set.');
     

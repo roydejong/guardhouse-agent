@@ -1,7 +1,8 @@
 {
   "guardhouse": {
-    "token": "LOCALHOST_TOKEN_TEST",
-    "server": "https://localhost",
+    "token_client": "CLIENT_TOKEN_TEST",
+    "token_server": "SERVER_TOKEN_TEST",
+    "server": "http://localhost",
     "allow_unsafe": true
   },
   "logging": {

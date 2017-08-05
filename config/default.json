@@ -1,6 +1,7 @@
 {
     "guardhouse": {
-        "token": "test123",
+        "token_client": "",
+        "token_server": "",
         "server": "https://agent.guardhou.se",
         "allow_unsafe": false
     },
