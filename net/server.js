@@ -73,7 +73,7 @@ class Server {
                 res.status(403);
                 res.send('Not authorized: Invalid or missing access token');
             }
-        });
+        }.bind(this));
     }
 
     /**
