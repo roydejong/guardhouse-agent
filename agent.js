@@ -73,7 +73,13 @@ if (abortStart) {
 // Config OK - starting for real, yo
 // ---------------------------------------------------------------------------------------------------------------------
 
+// Start pull netcode (agent api server for push from server)
 const net = require('./net');
-
-// Start network (push [server to receive events] & pull [scheduled fetch from server])
 net.server.start();
+
+// Perform self registration with the API (initial offer / sync config)
+const selfReg = require('./net/remote/server-registration');
+selfReg.perform();
+
+// Schedule periodic pulls
+// TODO

@@ -2,3 +2,4 @@
 node_modules/
 agent.log
 /agent.localhost.log
+npm-debug.log

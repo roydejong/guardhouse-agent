@@ -13,6 +13,7 @@
   "author": "roy@softwarepunt.nl",
   "license": "SEE LICENSE IN LICENSE.md",
   "dependencies": {
+    "axios": "^0.16.2",
     "config": "^1.26.1",
     "express": "^4.15.3",
     "winston": "^2.3.1",
