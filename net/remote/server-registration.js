@@ -1,17 +1,36 @@
 const logging = require('winston-color');
 const config = require('config');
-const apiUrl = require('./api-url');
 const axios = require('axios');
+const sysinfo = require('systeminformation');
+
+const apiUrl = require('./api-url');
 
 class ServerRegistration {
     static perform() {
-        logging.info('Remote: Performing registration with Guardhouse server');
-
-        let payload = {
-            "push_server_enabled": (!!config.get('server.enabled'))
+        // Begin preparing the payload
+        this.payload = {
+            "push_server_enabled": (!!config.get('server.enabled')),
+            "os_info": null
         };
 
-        axios.get(apiUrl.make('/api/sync/register'), payload)
+        // Enrich the payload: Gather system information
+        sysinfo.osInfo()
+            .then(data => {
+                this.payload.os_info = data;
+                this._sendReg();
+            })
+            .catch(error => {
+                logging.error('Registration: Unable to fetch system information:' + e.message);
+                this._sendReg();
+            });
+    }
+
+    static _sendReg() {
+        logging.info('Remote: Performing registration with Guardhouse server');
+
+        logging.debug('Remote: Sending registration payload', this.payload);
+
+        axios.get(apiUrl.make('/api/sync/register'), this.payload)
             .then(function (response) {
                 logging.info('Remote: Registration success.');
             })
