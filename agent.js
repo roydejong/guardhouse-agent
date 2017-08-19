@@ -4,6 +4,7 @@
 const winston = require('winston');
 const logging = require('winston-color');
 const config = require('config');
+const axios = require('axios');
 
 // Initiate startup, read config and set up logging
 const serverUrl = config.get('guardhouse.server');
@@ -72,6 +73,9 @@ if (abortStart) {
 // ---------------------------------------------------------------------------------------------------------------------
 // Config OK - starting for real, yo
 // ---------------------------------------------------------------------------------------------------------------------
+
+// Set defaults for axios (net lib)
+axios.defaults.headers.common['Authorization'] = clientToken;
 
 // Start pull netcode (agent api server for push from server)
 const net = require('./net');
