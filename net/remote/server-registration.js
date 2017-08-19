@@ -30,7 +30,7 @@ class ServerRegistration {
 
         logging.debug('Remote: Sending registration payload', this.payload);
 
-        axios.get(apiUrl.make('/api/sync/register'), this.payload)
+        axios.post(apiUrl.make('/sync/register'), this.payload)
             .then(function (response) {
                 logging.info('Remote: Registration success.');
             })
