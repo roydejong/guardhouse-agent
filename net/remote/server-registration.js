@@ -5,6 +5,8 @@ const sysinfo = require('systeminformation');
 
 const apiUrl = require('./api-url');
 
+const server = require('../server');
+
 class ServerRegistration {
     static perform() {
         // Begin preparing the payload
@@ -32,7 +34,20 @@ class ServerRegistration {
 
         axios.post(apiUrl.make('/sync/register'), this.payload)
             .then(function (response) {
-                logging.info('Remote: Registration success.');
+                logging.info('Remote: Registration success.', response.data);
+
+                if (response.data.server_token) {
+                    let newServerToken = response.data.server_token;
+                    let prevServerToken = config.get('guardhouse.token_server');
+
+                    if (newServerToken
+                        && newServerToken.length >= 16
+                        && newServerToken !== prevServerToken) {
+                        // We have an updated token, let's log it & try to write it to the config file
+                        logging.info('Remote: Received new server token during registration:', newServerToken);
+                        server.setServerToken(newServerToken);
+                    }
+                }
             })
             .catch(function (error) {
                 logging.error('Remote: Failed to register with Guardhouse server:', error.message);

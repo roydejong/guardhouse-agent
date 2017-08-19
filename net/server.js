@@ -21,10 +21,7 @@ class Server {
         
         if (!this.serverToken) {
             // Missing token, implicitly disabled (forgot to set up or not interested in push)
-            logging.warn('Server: There is no server_token provided in the configuration!');
-            logging.warn(' - To enable push functionality, get a token from the Guardhouse server, then set "guardhouse.token_server" in the agent config.');
-            logging.warn(' - Disabling server and push functionality for now.');
-            return;
+            logging.warn('Server: There is currently no "server_token" set in the configuration, will try to acquire during registration');
         }
 
         this.express = express();
@@ -32,6 +29,16 @@ class Server {
         this.initMiddleware();
         this.initEndpoints();
         this.initListener();
+    }
+
+    static setServerToken(serverToken) {
+        let hadNoToken = (!this.serverToken);
+
+        this.serverToken = serverToken;
+
+        if (hadNoToken && this.serverToken) {
+            logging.info('Server: A server_token was aquired, now ready to accept authenticated requests (push enabled)');
+        }
     }
 
     /**
@@ -57,9 +64,19 @@ class Server {
      */
     static initMiddleware() {
         this.express.use(function (req, res, next) {
+            if (!this.serverToken) {
+                // We have no server token to authorize incoming requests against, so deny everything with a 403 error
+                // This is usually a temporary state, as registration should result in a token being set
+                res.status(403);
+                res.send('Forbidden: Requests are not permitted to this resource at this time.');
+
+                logging.warn('Server: Denying all requests due to missing "server_token" in config');
+                return;
+            }
+
             let validAuth = false;
             let authToken = req.headers['authorization'];
-            
+
             if (authToken && authToken.length && authToken === this.serverToken) {
                 validAuth = true;
             } else {
@@ -70,8 +87,8 @@ class Server {
                 logging.debug(`Server: Accepted request from ${req.connection.remoteAddress}: ${req.originalUrl}`);
                 next();
             } else {
-                res.status(403);
-                res.send('Not authorized: Invalid or missing access token');
+                res.status(401);
+                res.send('Not authenticated: Invalid or missing access token');
             }
         }.bind(this));
     }
