@@ -7,56 +7,64 @@
     <orderEntry type="module-library">
       <library name="PHP" type="php">
         <CLASSES>
-          <root url="file://$MODULE_DIR$/../guardhouse-server/vendor/composer" />
-          <root url="file://$MODULE_DIR$/../guardhouse-server/vendor/filp/whoops" />
-          <root url="file://$MODULE_DIR$/../guardhouse-server/vendor/instasell/framework" />
-          <root url="file://$MODULE_DIR$/../guardhouse-server/vendor/instasell/instarecord" />
-          <root url="file://$MODULE_DIR$/../guardhouse-server/vendor/maximebf/debugbar" />
-          <root url="file://$MODULE_DIR$/../guardhouse-server/vendor/minime/annotations" />
-          <root url="file://$MODULE_DIR$/../guardhouse-server/vendor/nikic/php-parser" />
-          <root url="file://$MODULE_DIR$/../guardhouse-server/vendor/psr/log" />
-          <root url="file://$MODULE_DIR$/../guardhouse-server/vendor/regex-guard/regex-guard" />
-          <root url="file://$MODULE_DIR$/../guardhouse-server/vendor/robmorgan/phinx" />
-          <root url="file://$MODULE_DIR$/../guardhouse-server/vendor/symfony/config" />
-          <root url="file://$MODULE_DIR$/../guardhouse-server/vendor/symfony/console" />
-          <root url="file://$MODULE_DIR$/../guardhouse-server/vendor/symfony/debug" />
-          <root url="file://$MODULE_DIR$/../guardhouse-server/vendor/symfony/filesystem" />
-          <root url="file://$MODULE_DIR$/../guardhouse-server/vendor/symfony/polyfill-mbstring" />
-          <root url="file://$MODULE_DIR$/../guardhouse-server/vendor/symfony/var-dumper" />
-          <root url="file://$MODULE_DIR$/../guardhouse-server/vendor/symfony/yaml" />
-          <root url="file://$MODULE_DIR$/../guardhouse-server/vendor/twig/extensions" />
-          <root url="file://$MODULE_DIR$/../guardhouse-server/vendor/twig/twig" />
+          <root url="file://$USER_HOME$/guardhouse-server/vendor/composer" />
+          <root url="file://$USER_HOME$/guardhouse-server/vendor/filp/whoops" />
+          <root url="file://$USER_HOME$/guardhouse-server/vendor/instasell/framework" />
+          <root url="file://$USER_HOME$/guardhouse-server/vendor/instasell/instarecord" />
+          <root url="file://$USER_HOME$/guardhouse-server/vendor/maximebf/debugbar" />
+          <root url="file://$USER_HOME$/guardhouse-server/vendor/minime/annotations" />
+          <root url="file://$USER_HOME$/guardhouse-server/vendor/nikic/php-parser" />
+          <root url="file://$USER_HOME$/guardhouse-server/vendor/psr/log" />
+          <root url="file://$USER_HOME$/guardhouse-server/vendor/regex-guard/regex-guard" />
+          <root url="file://$USER_HOME$/guardhouse-server/vendor/robmorgan/phinx" />
+          <root url="file://$USER_HOME$/guardhouse-server/vendor/symfony/config" />
+          <root url="file://$USER_HOME$/guardhouse-server/vendor/symfony/console" />
+          <root url="file://$USER_HOME$/guardhouse-server/vendor/symfony/debug" />
+          <root url="file://$USER_HOME$/guardhouse-server/vendor/symfony/filesystem" />
+          <root url="file://$USER_HOME$/guardhouse-server/vendor/symfony/polyfill-mbstring" />
+          <root url="file://$USER_HOME$/guardhouse-server/vendor/symfony/var-dumper" />
+          <root url="file://$USER_HOME$/guardhouse-server/vendor/symfony/yaml" />
+          <root url="file://$USER_HOME$/guardhouse-server/vendor/twig/extensions" />
+          <root url="file://$USER_HOME$/guardhouse-server/vendor/twig/twig" />
         </CLASSES>
         <SOURCES>
-          <root url="file://$MODULE_DIR$/../guardhouse-server/vendor/composer" />
-          <root url="file://$MODULE_DIR$/../guardhouse-server/vendor/filp/whoops" />
-          <root url="file://$MODULE_DIR$/../guardhouse-server/vendor/instasell/framework" />
-          <root url="file://$MODULE_DIR$/../guardhouse-server/vendor/instasell/instarecord" />
-          <root url="file://$MODULE_DIR$/../guardhouse-server/vendor/maximebf/debugbar" />
-          <root url="file://$MODULE_DIR$/../guardhouse-server/vendor/minime/annotations" />
-          <root url="file://$MODULE_DIR$/../guardhouse-server/vendor/nikic/php-parser" />
-          <root url="file://$MODULE_DIR$/../guardhouse-server/vendor/psr/log" />
-          <root url="file://$MODULE_DIR$/../guardhouse-server/vendor/regex-guard/regex-guard" />
-          <root url="file://$MODULE_DIR$/../guardhouse-server/vendor/robmorgan/phinx" />
-          <root url="file://$MODULE_DIR$/../guardhouse-server/vendor/symfony/config" />
-          <root url="file://$MODULE_DIR$/../guardhouse-server/vendor/symfony/console" />
-          <root url="file://$MODULE_DIR$/../guardhouse-server/vendor/symfony/debug" />
-          <root url="file://$MODULE_DIR$/../guardhouse-server/vendor/symfony/filesystem" />
-          <root url="file://$MODULE_DIR$/../guardhouse-server/vendor/symfony/polyfill-mbstring" />
-          <root url="file://$MODULE_DIR$/../guardhouse-server/vendor/symfony/var-dumper" />
-          <root url="file://$MODULE_DIR$/../guardhouse-server/vendor/symfony/yaml" />
-          <root url="file://$MODULE_DIR$/../guardhouse-server/vendor/twig/extensions" />
-          <root url="file://$MODULE_DIR$/../guardhouse-server/vendor/twig/twig" />
+          <root url="file://$USER_HOME$/guardhouse-server/vendor/composer" />
+          <root url="file://$USER_HOME$/guardhouse-server/vendor/filp/whoops" />
+          <root url="file://$USER_HOME$/guardhouse-server/vendor/instasell/framework" />
+          <root url="file://$USER_HOME$/guardhouse-server/vendor/instasell/instarecord" />
+          <root url="file://$USER_HOME$/guardhouse-server/vendor/maximebf/debugbar" />
+          <root url="file://$USER_HOME$/guardhouse-server/vendor/minime/annotations" />
+          <root url="file://$USER_HOME$/guardhouse-server/vendor/nikic/php-parser" />
+          <root url="file://$USER_HOME$/guardhouse-server/vendor/psr/log" />
+          <root url="file://$USER_HOME$/guardhouse-server/vendor/regex-guard/regex-guard" />
+          <root url="file://$USER_HOME$/guardhouse-server/vendor/robmorgan/phinx" />
+          <root url="file://$USER_HOME$/guardhouse-server/vendor/symfony/config" />
+          <root url="file://$USER_HOME$/guardhouse-server/vendor/symfony/console" />
+          <root url="file://$USER_HOME$/guardhouse-server/vendor/symfony/debug" />
+          <root url="file://$USER_HOME$/guardhouse-server/vendor/symfony/filesystem" />
+          <root url="file://$USER_HOME$/guardhouse-server/vendor/symfony/polyfill-mbstring" />
+          <root url="file://$USER_HOME$/guardhouse-server/vendor/symfony/var-dumper" />
+          <root url="file://$USER_HOME$/guardhouse-server/vendor/symfony/yaml" />
+          <root url="file://$USER_HOME$/guardhouse-server/vendor/twig/extensions" />
+          <root url="file://$USER_HOME$/guardhouse-server/vendor/twig/twig" />
         </SOURCES>
       </library>
     </orderEntry>
     <orderEntry type="module-library">
       <library name="PHARS">
         <CLASSES>
-          <root url="phar://$MODULE_DIR$/../guardhouse-server/vendor/twig/twig/test/Twig/Tests/Loader/Fixtures/phar/phar-sample.phar/" />
+          <root url="phar://$USER_HOME$/guardhouse-server/vendor/instasell/framework/composer.phar/" />
+          <root url="phar://$USER_HOME$/guardhouse-server/vendor/instasell/framework/vendor/twig/twig/test/Twig/Tests/Loader/Fixtures/phar/phar-sample.phar/" />
+          <root url="phar://$USER_HOME$/guardhouse-server/vendor/instasell/framework/vendor/phar-io/manifest/tests/_fixture/test.phar/" />
+          <root url="phar://$USER_HOME$/guardhouse-server/vendor/twig/twig/test/Twig/Tests/Loader/Fixtures/phar/phar-sample.phar/" />
+          <root url="phar://$USER_HOME$/guardhouse-server/vendor/instasell/framework/vendor/phpunit/phpunit/tests/_files/phpunit-example-extension/tools/phpunit.d/phpunit-example-extension-1.0.1.phar/" />
         </CLASSES>
         <SOURCES>
-          <root url="phar://$MODULE_DIR$/../guardhouse-server/vendor/twig/twig/test/Twig/Tests/Loader/Fixtures/phar/phar-sample.phar/" />
+          <root url="phar://$USER_HOME$/guardhouse-server/vendor/instasell/framework/composer.phar/" />
+          <root url="phar://$USER_HOME$/guardhouse-server/vendor/instasell/framework/vendor/twig/twig/test/Twig/Tests/Loader/Fixtures/phar/phar-sample.phar/" />
+          <root url="phar://$USER_HOME$/guardhouse-server/vendor/instasell/framework/vendor/phar-io/manifest/tests/_fixture/test.phar/" />
+          <root url="phar://$USER_HOME$/guardhouse-server/vendor/twig/twig/test/Twig/Tests/Loader/Fixtures/phar/phar-sample.phar/" />
+          <root url="phar://$USER_HOME$/guardhouse-server/vendor/instasell/framework/vendor/phpunit/phpunit/tests/_files/phpunit-example-extension/tools/phpunit.d/phpunit-example-extension-1.0.1.phar/" />
         </SOURCES>
       </library>
     </orderEntry>

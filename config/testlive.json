@@ -1,0 +1,10 @@
+{
+  "guardhouse": {
+    "token_client": "88964361d7cdebc8b5b7a05e6b9e9100",
+    "server": "http://guardhouse.softwarepunt.com",
+    "allow_unsafe": true
+  },
+  "logging": {
+    "path": "guardhouse.softwarepunt.com.log"
+  }
+}
