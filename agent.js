@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 /**
  * Bootstrap file for the Guardhouse Agent
  */
