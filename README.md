@@ -23,7 +23,17 @@ The current version of the agent is tested on and designed to support **Ubuntu 1
 Node.js and npm are required to install and run the agent:
 [https://nodejs.org/en/download/package-manager/](https://nodejs.org/en/download/package-manager/)  
 
+## Easy installation
+
+If you are using a supported environment, you can use your normal package manager to install the agent (recommended).
+
+### .deb package (apt-get)
+
+(Coming soon brah!)
+
 ## Manual installation
+
+If you are not using a Debian based system, or if you wish to install the agent manually, you can do so via `npm` (not recommended unless you have to). 
 
 ### Package installation
 
