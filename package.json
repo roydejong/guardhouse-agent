@@ -14,7 +14,7 @@
     "guardhouse-agent": "./agent.js"
   },
   "author": "roy@softwarepunt.nl",
-  "license": "SEE LICENSE IN LICENSE.md",
+  "license": "GPL-3.0+",
   "dependencies": {
     "axios": "^0.16.2",
     "config": "^1.26.1",
