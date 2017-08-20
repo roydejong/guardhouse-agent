@@ -1,6 +1,6 @@
 {
   "name": "guardhouse-agent",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "Agent for Guardhouse",
   "main": "agent.js",
   "scripts": {
