@@ -36,8 +36,8 @@ class Poller {
 
     static poll() {
         axios.get(apiUrl.make('/sync/pull'))
-            .then((data) => {
-                logging.debug('Pull result:', data);
+            .then((response) => {
+                logging.debug('Pull result:', response.data);
 
                 if (!selfReg.didSucceed) {
                     logging.warn('Poller: Registration has not yet been completed, re-trying now instead of regular sync');
