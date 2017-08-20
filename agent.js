@@ -2,6 +2,9 @@
 
 'use strict';
 
+// Config directory should always use our install dir to ease setup
+process.env['NODE_CONFIG_DIR'] = __dirname + '/config';
+
 /**
  * Bootstrap file for the Guardhouse Agent
  */
@@ -52,12 +55,13 @@ let currentUser = OS.userInfo().username;
 let osPlatform = OS.platform();
 let osRelease = OS.release();
 
-logging.info(' - Node environment: ' + (process.env.NODE_ENV ? process.env.NODE_ENV : 'default (Not provided)'));
-logging.info(' - Target server:', serverUrl);
-logging.info(' - Client token:', clientTokenMasked);
-logging.info(' - Log target:', logValue);
-logging.info(' - Current user:', currentUser);
-logging.info(' - Platform:', `${osPlatform} / ${osRelease}`);
+logging.info(` - Installation directory: ${__dirname}`);
+logging.info(` - Node environment: ${process.env.NODE_ENV ? process.env.NODE_ENV : 'default (Not provided)'}`);
+logging.info(` - Target server: ${serverUrl}`);
+logging.info(` - Client token: ${clientTokenMasked}`);
+logging.info(` - Log file: ${process.cwd()} -> ${logValue}`);
+logging.info(` - Current user: ${currentUser}`);
+logging.info(` - Platform: ${osPlatform} / ${osRelease}`);
 
 let abortStart = false;
 
