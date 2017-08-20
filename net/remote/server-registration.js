@@ -28,13 +28,13 @@ class ServerRegistration {
     }
 
     static _sendReg() {
-        logging.info('Remote: Performing registration with Guardhouse server');
-
-        logging.debug('Remote: Sending registration payload', this.payload);
+        logging.debug('Remote: Sending registration payload:', JSON.stringify(this.payload));
 
         axios.post(apiUrl.make('/sync/register'), this.payload)
             .then(function (response) {
                 logging.info('Remote: Registration success.', response.data);
+
+                ServerRegistration.didSucceed = true;
 
                 if (response.data.server_token) {
                     let newServerToken = response.data.server_token;

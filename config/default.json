@@ -3,7 +3,8 @@
         "token_client": "",
         "token_server": "",
         "server": "https://agent.guardhou.se",
-        "allow_unsafe": false
+        "allow_unsafe": false,
+        "poll_interval_seconds": 60
     },
     "server": {
         "enabled": true,

@@ -4,7 +4,7 @@
 const winston = require('winston');
 const logging = require('winston-color');
 const config = require('config');
-const axios = require('axios');
+const package = require('./package.json');
 
 // Initiate startup, read config and set up logging
 const serverUrl = config.get('guardhouse.server');
@@ -74,16 +74,21 @@ if (abortStart) {
 // Config OK - starting for real, yo
 // ---------------------------------------------------------------------------------------------------------------------
 
+const net = require('./net');
+const axios = require('axios');
+
 // Set defaults for axios (net lib)
 axios.defaults.headers.common['Authorization'] = clientToken;
+axios.defaults.headers.common['X-Agent-Package'] = package.name;
+axios.defaults.headers.common['X-Agent-Version'] = package.version;
 
 // Start pull netcode (agent api server for push from server)
-const net = require('./net');
 net.server.start();
 
 // Perform self registration with the API (initial offer / sync config)
 const selfReg = require('./net/remote/server-registration');
 selfReg.perform();
 
-// Schedule periodic pulls
-// TODO
+// Schedule periodic polling for config changes
+net.poller.start();
+

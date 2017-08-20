@@ -1,3 +1,4 @@
 module.exports = {
-    server: require('./server')
+    server: require('./server'),
+    poller: require('./poller')
 };
