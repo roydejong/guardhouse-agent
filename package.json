@@ -4,7 +4,7 @@
   "description": "Agent for Guardhouse",
   "main": "agent.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node agent.js"
   },
   "repository": {
     "type": "git",
