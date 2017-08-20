@@ -12,5 +12,8 @@
     },
     "logging": {
         "path": "agent.log"
+    },
+    "security": {
+        "allow_root": false
     }
 }

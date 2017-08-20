@@ -61,6 +61,18 @@ logging.info(' - Platform:', `${osPlatform} / ${osRelease}`);
 
 let abortStart = false;
 
+if (osPlatform !== 'win32' && currentUser === 'root') {
+    logging.warn('WARNING: For security reasons, it is not recommended to run the guardhouse-agent as superuser (root).');
+    logging.warn(' - We highly recommend creating a separate user with specific permissions for the guardhouse-agent.');
+
+    if (config.get('security.allow_root') !== true) {
+        logging.error('Configuration problem: Your configuration does not allow the guardhouse-agent to run as superuser.');
+        logging.error(' - To override this security policy, set "security.allow_root" to true.')
+
+        abortStart = true;
+    }
+}
+
 if (!serverUrl || !clientToken || clientToken.length < 8) {
     logging.error('Configuration problem: Core configuration is missing.');
     logging.error(' - Please ensure that a valid target server and access token (min length: 8) are set.');
