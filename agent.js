@@ -9,6 +9,7 @@ const winston = require('winston');
 const logging = require('winston-color');
 const config = require('config');
 const packageJSON = require('./package.json');
+const OS = require("os");
 
 // Initiate startup, read config and set up logging
 const serverUrl = config.get('guardhouse.server');
@@ -47,10 +48,16 @@ if (clientToken) {
     }
 }
 
+let currentUser = OS.userInfo().username;
+let osPlatform = OS.platform();
+let osRelease = OS.release();
+
 logging.info(' - Node environment: ' + (process.env.NODE_ENV ? process.env.NODE_ENV : 'default (Not provided)'));
 logging.info(' - Target server:', serverUrl);
 logging.info(' - Client token:', clientTokenMasked);
 logging.info(' - Log target:', logValue);
+logging.info(' - Current user:', currentUser);
+logging.info(' - Platform:', `${osPlatform} / ${osRelease}`);
 
 let abortStart = false;
 
