@@ -1,12 +1,14 @@
 #!/usr/bin/env node
 
+'use strict';
+
 /**
  * Bootstrap file for the Guardhouse Agent
  */
 const winston = require('winston');
 const logging = require('winston-color');
 const config = require('config');
-const package = require('./package.json');
+const packageJSON = require('./package.json');
 
 // Initiate startup, read config and set up logging
 const serverUrl = config.get('guardhouse.server');
@@ -81,8 +83,8 @@ const axios = require('axios');
 
 // Set defaults for axios (net lib)
 axios.defaults.headers.common['Authorization'] = clientToken;
-axios.defaults.headers.common['X-Agent-Package'] = package.name;
-axios.defaults.headers.common['X-Agent-Version'] = package.version;
+axios.defaults.headers.common['X-Agent-Package'] = packageJSON.name;
+axios.defaults.headers.common['X-Agent-Version'] = packageJSON.version;
 
 // Start pull netcode (agent api server for push from server)
 net.server.start();
