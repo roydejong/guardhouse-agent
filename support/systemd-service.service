@@ -1,0 +1,14 @@
+[Unit]
+Description=Guardhouse Agent
+
+[Service]
+ExecStart=/usr/bin/guardhouse-agent
+Restart=always
+User=root
+Group=root
+Environment=PATH=/usr/bin:/usr/local/bin
+Environment=NODE_ENV=test
+WorkingDirectory=/var/www/client-test
+
+[Install]
+WantedBy=multi-user.target
