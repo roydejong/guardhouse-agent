@@ -1,6 +1,6 @@
 {
   "name": "guardhouse-agent",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Agent for Guardhouse",
   "main": "agent.js",
   "scripts": {
@@ -9,6 +9,9 @@
   "repository": {
     "type": "git",
     "url": "git@git.softwarepunt.nl:software-punt/guardhouse-agent.git"
+  },
+  "bin": {
+    "guardhouse-agent": "./agent.js"
   },
   "author": "roy@softwarepunt.nl",
   "license": "SEE LICENSE IN LICENSE.md",
