@@ -193,7 +193,7 @@ class GInterpreter extends Interpreter {
         }
 
         // ----- Evaluate state ----------------------------------------------------------------------------------------
-        if (buffer.length) {
+        if (buffer.length || currentInstructionComponents.length) {
             // Buffer is not empty, that means certain characters were not interpreted by us
 
             // To clarify: After we process an instruction, we call "_finalizeBuffer" which emptes it.
@@ -201,7 +201,11 @@ class GInterpreter extends Interpreter {
 
             // This usually indicates an instruction or literal that was not terminated correctly.
 
-            throw new Error('Syntax error: Unexpected end of script.');
+            if (readingLiteral) {
+                throw new Error('Syntax error: Unexpected end of script - unterminated string literal. Did you forget a closing quote character?');
+            }
+
+            throw new Error('Syntax error: Unexpected end of script - unterminated instruction. Did you forget a semicolon (;)?');
         }
     }
 }
@@ -216,7 +220,7 @@ GInterpreter.T_STRING_SINGLE_QUOTE = "'";
 GInterpreter.T_RETURN = "\r";
 GInterpreter.T_NEW_LINE = "\n";
 /**
- * Escape characters can be used inside literals to force the interpreter to never tokenize the character following it.
+ * Escape characters can be used inside literals to force the interpreter to never interpret the character following it.
  *
  * Example: A literal containing `I like \"poop\"` would be interpreted as `I like "poop"`
  * Example: A literal containing `I escape \\ twice` would be interpreted as `I escape \ twice`;
