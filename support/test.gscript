@@ -1,0 +1,10 @@
+## This is a test file for GScript interpreter
+## It should ignore these comments
+
+blah {
+    test "some literal component" andANonLit;
+    do something or "don't" 'or do';
+}
+
+glob;
+blah "escape \"this\"";

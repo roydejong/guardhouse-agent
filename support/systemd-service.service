@@ -7,7 +7,7 @@ Restart=always
 User=root
 Group=root
 Environment=PATH=/usr/bin:/usr/local/bin
-Environment=NODE_ENV=test
+Environment=NODE_ENV=default
 WorkingDirectory=/var/www/client-test
 
 [Install]

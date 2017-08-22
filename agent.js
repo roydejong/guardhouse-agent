@@ -37,6 +37,24 @@ if (loggingConfig.path) {
 
 logging.info('Guardhouse Agent is starting...');
 
+// ---------------------------------------------------------------------------------------------------------------------
+// Scripting test -->
+// ---------------------------------------------------------------------------------------------------------------------
+
+let Recipe = require('./scripting').Recipe;
+
+let fs = require('fs');
+fs.readFile('support/test.gscript', 'utf8', function (err, data) {
+    let recipe = new Recipe(data);
+    recipe.run();
+});
+
+return;
+
+// ---------------------------------------------------------------------------------------------------------------------
+// Scripting test EOF
+// ---------------------------------------------------------------------------------------------------------------------
+
 let clientTokenMasked = 'Not set';
 
 if (clientToken) {
@@ -118,4 +136,3 @@ selfReg.perform();
 
 // Schedule periodic polling for config changes
 net.poller.start();
-
