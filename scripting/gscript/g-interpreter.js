@@ -218,7 +218,7 @@ class GInterpreter extends Interpreter {
         }
 
         // ----- Evaluate state ----------------------------------------------------------------------------------------
-        if (buffer.length || interpretingInstruction) {
+        if ((buffer.length || interpretingInstruction) && !readingComment) {
             // Buffer is not empty, that means certain characters were not interpreted by us
 
             // To clarify: After we process an instruction, we call "_finalizeBuffer" which emptes it.
