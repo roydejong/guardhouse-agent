@@ -33,6 +33,7 @@ class GInterpreter extends Interpreter {
         let literalOpenChar = null;
 
         let currentInstructionComponents = [];
+        let interpretingInstruction = false;
 
         let buffer = [];
         let bufferIdx = 0;
@@ -63,6 +64,7 @@ class GInterpreter extends Interpreter {
 
                 if (finalizedBuffer.length) {
                     currentInstructionComponents.push(finalizedBuffer);
+                    interpretingInstruction = true;
                 }
             }
 
@@ -77,13 +79,14 @@ class GInterpreter extends Interpreter {
         };
 
         let _finalizeInstruction = function () {
-            if (currentInstructionComponents.length) {
+            if (interpretingInstruction) {
                 _exec(currentInstructionComponents);
             } else {
                 Logger.debug('GScript: EXEC_NOOP_BLANK');
             }
 
             currentInstructionComponents = [];
+            interpretingInstruction = false;
         };
 
         // ----- Begin token parsing -----------------------------------------------------------------------------------
@@ -95,14 +98,15 @@ class GInterpreter extends Interpreter {
                 lastChar = buffer[bufferIdx - 1];
             }
 
-            if (!readingLiteral && lastChar === GInterpreter.T_SPACE && char === GInterpreter.T_SPACE) {
-                // Any repeating spaces are of no value to us outside of a literal
-                continue;
-            }
+            if (!readingLiteral) {
+                // When parsing non-literals, ignore certain chars:
+                // - SPACE: Any repeating spaces are of no value to us
+                // - RETURN: We discard any carriage returns (\r); we only use
 
-            if (char === GInterpreter.T_RETURN) {
-                // Ignore carriage returns (\r), to simplyify life we only interpet \n as a newline
-                continue;
+                if ((lastChar === GInterpreter.T_SPACE && char === GInterpreter.T_SPACE) ||
+                    char === GInterpreter.T_RETURN) {
+                    continue;
+                }
             }
 
             if (readingLiteral) {
@@ -146,6 +150,10 @@ class GInterpreter extends Interpreter {
                     }
                 } else if (char === GInterpreter.T_COMMENT) {
                     // COMMENT INDICATOR: Begin reading a comment string (they are allowed anywhere on a line)
+                    if (interpretingInstruction) {
+                        throw new Error('Syntax error. Unexpected "#": cannot start a comment within an instruction. Comments must either be on a new line or follow a semicolon.');
+                    }
+
                     readingComment = true;
                     continue;
                 } else if (char === GInterpreter.T_CONTEXT_OPEN) {
@@ -193,7 +201,7 @@ class GInterpreter extends Interpreter {
         }
 
         // ----- Evaluate state ----------------------------------------------------------------------------------------
-        if (buffer.length || currentInstructionComponents.length) {
+        if (buffer.length || interpretingInstruction) {
             // Buffer is not empty, that means certain characters were not interpreted by us
 
             // To clarify: After we process an instruction, we call "_finalizeBuffer" which emptes it.
