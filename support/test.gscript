@@ -6,5 +6,9 @@ blah {
     do something or "don't" 'or do';
 }
 
+if (x == z + 1) {
+    echo "yay";
+}
+
 glob;
 blah "escape \"this\"";

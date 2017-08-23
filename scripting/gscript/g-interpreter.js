@@ -38,24 +38,27 @@ class GInterpreter extends Interpreter {
         let buffer = [];
         let bufferIdx = 0;
 
-        let contextStack = [];
-        let currentContext = 'global';
+        let contextStack = [0];
+        let contextActivations = { 0: true };
+        let currentContextId = 0;
+        let contextIdGenerator = 1;
+        let contextIsActive = true;
 
         // ----- Internal helper functions -----------------------------------------------------------------------------
-        let _exec = function (instr) {
-            logging.debug('GScript EXEC:', JSON.stringify(instr));
-        };
+        let _exec = function (instr, conditional) {
+            // Execute
+            let returnValue = null;
+            // TODO lol actual stuff
 
-        let _execConditional = function (instr) {
-            logging.debug('GScript EXEC_CONDITIONAL:', instr);
+            // Debug log
+            let logPrefix = (contextIsActive ? (conditional ? 'EXEC/C' : 'EXEC') : 'EXEC/SKIP');
+            let logCall = JSON.stringify(instr);
+            logging.debug(`GScript ${logPrefix}: ${logCall} -> RET ${returnValue}`);
+            return returnValue;
         };
 
         let _getJoinedBuffer = function () {
             return buffer.join('').trim();
-        };
-
-        let _getCurrentInstructionIdentifier = function () {
-            return JSON.stringify(currentInstructionComponents.join(''));
         };
 
         let _finalizeBuffer = function (flushToInstruction) {
@@ -78,9 +81,9 @@ class GInterpreter extends Interpreter {
             literalOpenChar = null;
         };
 
-        let _finalizeInstruction = function () {
+        let _finalizeInstructionToExec = function (conditional) {
             if (interpretingInstruction) {
-                _exec(currentInstructionComponents);
+                _exec(currentInstructionComponents, !!conditional);
             } else {
                 Logger.debug('GScript: EXEC_NOOP_BLANK');
             }
@@ -138,7 +141,7 @@ class GInterpreter extends Interpreter {
                 if (char === GInterpreter.T_INSTRUCTION_END) {
                     // INSTRUCTION TERMINATOR: Flush instruction
                     _finalizeBuffer(true);
-                    _finalizeInstruction();
+                    _finalizeInstructionToExec();
                     continue;
                 } else if (char === GInterpreter.T_NEW_LINE) {
                     // NEW LINE CHAR: Interpret as a space character, it has no value beyond a separator
@@ -151,24 +154,34 @@ class GInterpreter extends Interpreter {
                 } else if (char === GInterpreter.T_COMMENT) {
                     // COMMENT INDICATOR: Begin reading a comment string (they are allowed anywhere on a line)
                     if (interpretingInstruction) {
-                        throw new Error('Syntax error. Unexpected "#": cannot start a comment within an instruction. Comments must either be on a new line or follow a semicolon.');
+                        throw new Error('Syntax error. Unexpected "#": cannot start a comment within an instruction.');
                     }
 
                     readingComment = true;
                     continue;
                 } else if (char === GInterpreter.T_CONTEXT_OPEN) {
                     // CONTEXT OPEN: Begin a context block, which should have been preceded by an instruction
-                    let contextInstruction = _getCurrentInstructionIdentifier();
-
-                    if (!contextInstruction.length) {
+                    if (!interpretingInstruction) {
                         throw new Error('Syntax error. Unexpected "{" - no preceding conditional statement.')
                     }
 
-                    contextStack.push(currentContext);
-                    currentContext = contextInstruction;
+                    // Treat the "context open" as an end-of-instruction marker
+                    // We'll execute the instruction as a "conditional" and get a return value from it
+                    let returnValue = _finalizeInstructionToExec(true);
 
-                    logging.debug('GScript CNTX: <-- Enter context ' + contextInstruction);
+                    // If the return value evaluates to true, we'll "activate" the context
+                    // Otherwise, the context will still be interpreted but its instructions will not be executed
+                    let newContextId = contextIdGenerator++;
+                    let newContextActive = !!returnValue;
 
+                    // Push context data to execution stack
+                    contextStack.push(currentContextId);
+                    contextActivations[newContextId] = newContextActive;
+
+                    currentContextId = newContextId;
+                    contextIsActive = newContextActive;
+
+                    logging.debug(`GScript CNTX: <--- Enter [${newContextId}] - Activated: ${contextIsActive}`);
                     _finalizeBuffer(false);
                     continue;
                 } else if (char === GInterpreter.T_CONTEXT_CLOSE) {
@@ -177,10 +190,14 @@ class GInterpreter extends Interpreter {
                         throw new Error('Syntax error. Unexpected "}" - not in a context block.')
                     }
 
-                    let lastContext = contextStack.pop();
-                    currentContext = lastContext;
+                    // Go back to the previous context
+                    let oldContextId = currentContextId;
+                    let newContextId = contextStack.pop();
 
-                    logging.debug('GScript CNTX: --> Drop down to ' + lastContext);
+                    currentContextId = newContextId;
+                    contextIsActive = contextActivations[newContextId];
+
+                    logging.debug(`GScript CNTX: ---> Close [${oldContextId}], return to [${newContextId}] - Activated: ${contextIsActive}`);
 
                     _finalizeBuffer(false);
                     continue;
