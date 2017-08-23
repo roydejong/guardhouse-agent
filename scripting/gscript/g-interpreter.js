@@ -1,4 +1,5 @@
 const Interpreter = require('../interpreter');
+const GExecutor = require('./g-executor');
 
 const logging = require('winston-color');
 
@@ -47,8 +48,7 @@ class GInterpreter extends Interpreter {
         // ----- Internal helper functions -----------------------------------------------------------------------------
         let _exec = function (instr, conditional) {
             // Execute
-            let returnValue = null;
-            // TODO lol actual stuff
+            let returnValue = GExecutor.executeCommand(instr);
 
             // Debug log
             let logPrefix = (contextIsActive ? (conditional ? 'EXEC/C' : 'EXEC') : 'EXEC/SKIP');

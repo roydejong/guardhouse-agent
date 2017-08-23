@@ -1,14 +1,6 @@
-## This is a test file for GScript interpreter
-## It should ignore these comments
+package install letsencrypt;
 
-blah {
-    test "some literal component" andANonLit;
-    do something or "don't" 'or do';
+letsencrypt $webRoot $domainName {
+    cron add "certbot renew" "every month";
+    service nginx reload;
 }
-
-if (x == z + 1) {
-    echo "yay";
-}
-
-glob;
-blah "escape \"this\"";
