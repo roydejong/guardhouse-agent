@@ -13,6 +13,10 @@ const logging = require('winston-color');
 const config = require('config');
 const packageJSON = require('./package.json');
 const OS = require("os");
+const sh = require('shelljs');
+
+// Set shell output to silent
+sh.config.silent = true;
 
 // Initiate startup, read config and set up logging
 const serverUrl = config.get('guardhouse.server');
@@ -37,24 +41,6 @@ if (loggingConfig.path) {
 
 logging.info('Guardhouse Agent is starting...');
 
-// ---------------------------------------------------------------------------------------------------------------------
-// Scripting test -->
-// ---------------------------------------------------------------------------------------------------------------------
-
-let Recipe = require('./scripting').Recipe;
-
-let fs = require('fs');
-fs.readFile('support/test.gscript', 'utf8', function (err, data) {
-    let recipe = new Recipe(data);
-    recipe.run();
-});
-
-return;
-
-// ---------------------------------------------------------------------------------------------------------------------
-// Scripting test EOF
-// ---------------------------------------------------------------------------------------------------------------------
-
 let clientTokenMasked = 'Not set';
 
 if (clientToken) {
@@ -72,6 +58,27 @@ if (clientToken) {
 let currentUser = OS.userInfo().username;
 let osPlatform = OS.platform();
 let osRelease = OS.release();
+
+global.osPlatform = osPlatform;
+global.osRelease = osRelease;
+
+// ---------------------------------------------------------------------------------------------------------------------
+// Scripting test -->
+// ---------------------------------------------------------------------------------------------------------------------
+
+let Recipe = require('./scripting').Recipe;
+
+let fs = require('fs');
+fs.readFile('support/test.gscript', 'utf8', function (err, data) {
+    let recipe = new Recipe(data);
+    recipe.run();
+});
+
+return;
+
+// ---------------------------------------------------------------------------------------------------------------------
+// Scripting test EOF
+// ---------------------------------------------------------------------------------------------------------------------
 
 logging.info(` - Installation directory: ${__dirname}`);
 logging.info(` - Node environment: ${process.env.NODE_ENV ? process.env.NODE_ENV : 'default (Not provided)'}`);

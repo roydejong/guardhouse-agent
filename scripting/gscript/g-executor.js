@@ -1,4 +1,5 @@
 const logging = require('winston-color');
+const GCall = require('./g-call');
 
 class GExecutor {
     static init() {
@@ -24,7 +25,8 @@ class GExecutor {
             return false;
         }
 
-        return opInstance.execute(args);
+        let callData = new GCall(opName, args, this);
+        return opInstance.execute(callData);
     }
 }
 
