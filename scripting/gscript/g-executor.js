@@ -13,7 +13,20 @@ class GExecutor {
      */
     static init() {
         this.ops = require('../../logic/index').ops;
-        this.errorMode = GExecutor.ERROR_MODE_NORMAL;
+
+        GExecutor.setErrorMode(GExecutor.ERROR_MODE_NORMAL);
+    }
+
+    /**
+     * Changes the executor error mode.
+     *
+     * @see "GExecutor.ERROR_MODE_*"
+     * @param {string} errorMode
+     * @return {boolean}
+     */
+    static setErrorMode(errorMode) {
+        this.errorMode = errorMode;
+        return true;
     }
 
     /**

@@ -1,8 +1,10 @@
-package install letsencrypt;
-package update letsencrypt;
-package remove letsencrypt;
+errorMode "continue" {
+    package install "letsencrypt";
+    package update "letsencrypt";
+    package remove "letsencrypt";
 
-letsencrypt $webRoot $domainName {
-    cron add "certbot renew" "every month";
-    service nginx reload;
+    letsencrypt $webRoot $domainName {
+        cron add "certbot renew" "every month";
+        service nginx reload;
+    }
 }

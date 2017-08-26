@@ -9,6 +9,7 @@ class PackageOp extends Op {
     }
 
     static execute(call) {
+        return false;
         let args = call.args.slice();
 
         if (args.length !== 2) {
