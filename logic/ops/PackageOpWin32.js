@@ -4,6 +4,9 @@ const logging = require('winston-color');
 const Op = require('../Op');
 const PackageOpGeneric = require('./PackageOpGeneric');
 
+/**
+ * Op for managing OS packages on Windows-based platforms using the Chocolatey package manager.
+ */
 class PackageOpWin32 extends PackageOpGeneric {
     static get id() {
         return "package";

@@ -23,6 +23,9 @@ class GInterpreter extends Interpreter {
     }
 
     static run (scriptText) {
+        // ----- Interpreter reset -------------------------------------------------------------------------------------
+        GExecutor.reset();
+
         // ----- Preprocess script text --------------------------------------------------------------------------------
         scriptText = GInterpreter._preProcess(scriptText);
 
@@ -284,5 +287,14 @@ GInterpreter.T_NEW_LINE = "\n";
  * Example: A literal containing `I escape \\\\\\\ lots` would be interpreted as `I escape \\\ lots`
  */
 GInterpreter.T_ESCAPE = "\\";
+/**
+ * Variable indicators can be used to insert runtime variables as literals into instruction calls.
+ *
+ * Example: Executing "echo $bla;" would result in the value of runtime variable "bla" being inserted as a literal
+ *      in the place of the "$bla" marker.
+ *
+ * @see GExecutor
+ */
+GInterpreter.T_VARIABLE_INDICATOR = '$';
 
 module.exports = GInterpreter;

@@ -13,8 +13,36 @@ class GExecutor {
      */
     static init() {
         this.ops = require('../../logic/index').ops;
+        this.reset();
+    }
 
+    /**
+     * Resets the GExecutor machine state.
+     * This is usually called before interpreting a new script.
+     */
+    static reset() {
+        GExecutor.clearVariables();
         GExecutor.setErrorMode(GExecutor.ERROR_MODE_NORMAL);
+    }
+
+    /**
+     * Clears all variables.
+     */
+    static clearVariables() {
+        this._variables = { };
+    }
+
+    /**
+     *
+     * @param key
+     * @param value
+     */
+    static setVariable(key, value) {
+        this._variables[key] = value;
+    }
+
+    static getVariable(key) {
+        return this._variables[key];
     }
 
     /**

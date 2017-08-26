@@ -1,10 +1,7 @@
-errorMode "continue" {
-    package install "letsencrypt";
-    package update "letsencrypt";
-    package remove "letsencrypt";
+resetState;
 
-    letsencrypt $webRoot $domainName {
-        cron add "certbot renew" "every month";
-        service nginx reload;
-    }
-}
+errorMode "continue";
+
+set "packageName" "letsencrypt";
+
+package install $packageName;

@@ -12,14 +12,14 @@ class ExecutorErrorModeOp extends Op {
         let args = call.args.slice();
 
         if (args.length !== 1) {
-            logging.warn('[ErrorMode]', 'Cannot set error mode, missing argument.');
+            logging.warn('[ExecutorErrorModeOp]', 'Cannot set error mode, missing argument.');
             return false;
         }
 
         let newErrorMode = args.shift();
 
         if (call.executor.setErrorMode(newErrorMode)) {
-            logging.debug('[ErrorMode]', `Set executor error mode: ${newErrorMode}`);
+            logging.debug('[ExecutorErrorModeOp]', `Set executor error mode: ${newErrorMode}`);
             return true;
         }
 

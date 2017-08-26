@@ -3,6 +3,9 @@ const logging = require('winston-color');
 
 const Op = require('../Op');
 
+/**
+ * Op for managing OS packages using a native package manager.
+ */
 class PackageOpGeneric extends Op {
     static get id() {
         return "package";
