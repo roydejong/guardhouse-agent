@@ -55,9 +55,18 @@ class GInterpreter extends Interpreter {
 
             logging.debug(`GScript ${logPrefix}: ${logCall}`);
 
+            if (!contextIsActive) {
+                // Skip instruction
+                return null;
+            }
+
             // Execute
             let execResult = GExecutor.executeCommand(instr);
 
+            // Debug log more
+            logging.debug(' RET -->', JSON.stringify(execResult.opResult));
+
+            // Handle result
             if (execResult.abortExecution) {
                 if (conditional) {
                     // Conditional abort: Treat as "ignore the block"
@@ -66,7 +75,7 @@ class GInterpreter extends Interpreter {
 
                 logging.warn('GScript: Abort script execution');
                 abort = true;
-                return;
+                return false;
             }
 
             return !!execResult.opResult;
