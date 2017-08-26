@@ -50,6 +50,7 @@ class GExecutor {
 
         // Find all ops with a matching platform
         let compatibleOps = [];
+        let preferredOp = null;
 
         for (let i = 0; i < opMatches.length; i++) {
             let _op = opMatches[i];
@@ -60,26 +61,39 @@ class GExecutor {
             }
 
             let isCompatible = false;
+            let isPreferred = false;
 
-            for (let j = 0; j < platformList.length; i++) {
-                if (platformList[j] === osPlatform || platformList[j] === Op.PLATFORM_ANY) {
+            for (let j = 0; j < platformList.length; j++) {
+                if (platformList[j] === Op.PLATFORM_ANY) {
                     isCompatible = true;
-                    break;
+                }
+
+                if (platformList[j] === osPlatform) {
+                    isCompatible = true;
+                    isPreferred = true;
                 }
             }
 
             if (isCompatible) {
                 compatibleOps.push(_op);
+
+                if (isPreferred) {
+                    preferredOp = _op;
+                }
             }
         }
 
         // Return first match, if any
         if (!compatibleOps.length) {
             logging.warn(`GScript: Command is not implemented on this platform: "${opName}" - ${osPlatform} ${osRelease}`);
-            return false;
+            return null;
         }
 
-        return compatibleOps.shift();
+        if (!preferredOp) {
+            preferredOp = compatibleOps.shift();
+        }
+
+        return preferredOp;
     }
 
     /**
