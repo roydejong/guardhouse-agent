@@ -62,24 +62,6 @@ let osRelease = OS.release();
 global.osPlatform = osPlatform;
 global.osRelease = osRelease;
 
-// ---------------------------------------------------------------------------------------------------------------------
-// Scripting test -->
-// ---------------------------------------------------------------------------------------------------------------------
-
-let Recipe = require('./scripting').Recipe;
-
-let fs = require('fs');
-fs.readFile('support/test.gscript', 'utf8', function (err, data) {
-    let recipe = new Recipe(data);
-    recipe.run();
-});
-
-return;
-
-// ---------------------------------------------------------------------------------------------------------------------
-// Scripting test EOF
-// ---------------------------------------------------------------------------------------------------------------------
-
 logging.info(` - Installation directory: ${__dirname}`);
 logging.info(` - Node environment: ${process.env.NODE_ENV ? process.env.NODE_ENV : 'default (Not provided)'}`);
 logging.info(` - Target server: ${serverUrl}`);
