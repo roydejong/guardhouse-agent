@@ -14,11 +14,13 @@ class GExecutor {
     }
 
     static executeCommand(args) {
+        args = args.slice(); // do not modify input
+
         let opName = args.shift();
         let opInstance = GExecutor.resolveCommand(opName);
 
         if (!opInstance) {
-            logging.info(`GScript: Command not found: "${opName}"`);
+            logging.warn(`GScript: Command not found: "${opName}"`);
             return false;
         }
 
