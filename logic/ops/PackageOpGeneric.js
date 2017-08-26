@@ -44,23 +44,8 @@ class PackageOpGeneric extends Op {
             return;
         }
 
-        if (osPlatform === 'win32') {
-            if (!shell.which('choco')) {
-                logging.warn('[PackageOpGeneric]', 'Win32: Installing Chocolatey package manager...');
-
-                shell.exec(`@"%SystemRoot%\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -NoProfile -InputFormat None -ExecutionPolicy Bypass -Command "iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))"`);
-                shell.exec(`SET "PATH=%PATH%;%ALLUSERSPROFILE%\\chocolatey\\bin"`);
-            }
-
-            if (shell.which('choco')) {
-                this.packageManager = PackageOpGeneric.PM_CHOCO;
-            } else {
-                logging.error('[PackageOpGeneric]', 'Error: Chocolatey package manager not available / installation failed.');
-            }
-        } else {
-            if (shell.which('apt-get')) {
-                this.packageManager = PackageOpGeneric.PM_APT_GET;
-            }
+        if (shell.which('apt-get')) {
+            this.packageManager = PackageOpGeneric.PM_APT_GET;
         }
 
         if (this.packageManager) {
@@ -77,11 +62,7 @@ class PackageOpGeneric extends Op {
         logging.info('[PackageOpGeneric]', `${this.packageManager} -> Install package "${pkgName}"...`);
 
         if (this.packageManager === PackageOpGeneric.PM_APT_GET) {
-            return shell.exec(`apt-get install ${pkgName} -y`);
-        }
-
-        if (this.packageManager === PackageOpGeneric.PM_CHOCO) {
-            return shell.exec(`choco install ${pkgName} -y`);
+            return shell.exec(`apt-get install ${pkgName} -y`).code === 0;
         }
     }
 
@@ -89,11 +70,7 @@ class PackageOpGeneric extends Op {
         logging.info('[PackageOpGeneric]', `${this.packageManager} -> Remove package "${pkgName}"...`);
 
         if (this.packageManager === PackageOpGeneric.PM_APT_GET) {
-            return shell.exec(`apt-get remove ${pkgName} -y`);
-        }
-
-        if (this.packageManager === PackageOpGeneric.PM_CHOCO) {
-            return shell.exec(`choco uninstall ${pkgName} -y`);
+            return shell.exec(`apt-get remove ${pkgName} -y`).code === 0;
         }
     }
 
@@ -101,11 +78,7 @@ class PackageOpGeneric extends Op {
         logging.info('[PackageOpGeneric]', `${this.packageManager} -> Update package "${pkgName}"...`);
 
         if (this.packageManager === PackageOpGeneric.PM_APT_GET) {
-            return shell.exec(`apt-get upgrade ${pkgName} -y`);
-        }
-
-        if (this.packageManager === PackageOpGeneric.PM_CHOCO) {
-            return shell.exec(`choco upgrade ${pkgName} -y`);
+            return shell.exec(`apt-get upgrade ${pkgName} -y`).code === 0;
         }
 
         return false;
@@ -117,6 +90,5 @@ PackageOpGeneric.COMMAND_REMOVE = "remove";
 PackageOpGeneric.COMMAND_UPDATE = "update";
 
 PackageOpGeneric.PM_APT_GET = 'apt-get';
-PackageOpGeneric.PM_CHOCO = 'chocolatey';
 
 module.exports = PackageOpGeneric;
