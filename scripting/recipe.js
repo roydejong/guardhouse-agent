@@ -53,6 +53,7 @@ class Recipe {
      * Executes the recipe.
      *
      * @param {Runner|null} runner
+     * @return {boolean} TRUE if exec okay; FALSE if exec failed (runner result)
      */
     run(runner) {
         if (!runner) {
@@ -61,7 +62,7 @@ class Recipe {
         }
 
         // Execute on the runner
-        runner.run(this);
+        return runner.run(this);
     }
 }
 

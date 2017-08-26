@@ -11,6 +11,7 @@ class Runner {
      * Runs a Recipe.
      *
      * @param {Recipe} recipe
+     * @return {boolean} TRUE if exec okay; FALSE if exec failed (interpreter result)
      */
     run(recipe) {
         // TODO Return a promise for this stuff
@@ -29,15 +30,22 @@ class Runner {
         // Execute on the interpreter
         logging.info(`Scripting: Running recipe ${recipe.identifier} (${recipe.interpreter})...`);
 
+        let execResult = false;
+
         try {
             interpreterObj.run(recipe.text);
             logging.info(`Scripting: OK - Script execution completed.`);
+
+            execResult = true;
         } catch (e) {
             logging.error(`Scripting: ERROR - Execution failed: ${e.message}`);
+
+            execResult = false;
         }
 
         // Done
         this.currentRecipe = null;
+        return execResult;
     }
 }
 
