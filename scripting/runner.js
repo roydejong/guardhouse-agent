@@ -33,7 +33,7 @@ class Runner {
             interpreterObj.run(recipe.text);
             logging.info(`Scripting: OK - Script execution completed.`);
         } catch (e) {
-            logging.error(`Scripting: ERROR - Execution failed:` + e.message);
+            logging.error(`Scripting: ERROR - Execution failed: ${e.message}`);
         }
 
         // Done

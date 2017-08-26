@@ -8,13 +8,14 @@ const Op = require('../Op');
  */
 class ExecutorSetVariableOp extends Op {
     static get id() {
-        return "clearState";
+        return "set";
     }
 
     static execute(call) {
         let args = call.args.slice();
 
         if (args.length !== 2) {
+            logging.warn('[ExecutorSetVariableOp]', `Syntax error. Usage: set [name] [value]`);
             return false;
         }
 
@@ -23,7 +24,7 @@ class ExecutorSetVariableOp extends Op {
 
         call.executor.setVariable(varName, varValue);
 
-        logging.warn('[ExecutorSetVariableOp]', `Assign variable ${varName} -> "${varValue}"`);
+        logging.debug('[ExecutorSetVariableOp]', `Assign variable ${varName} -> "${varValue}"`);
 
         return true;
     }

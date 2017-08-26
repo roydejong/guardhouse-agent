@@ -33,14 +33,21 @@ class GExecutor {
     }
 
     /**
+     * Sets a named variable to a value.
      *
-     * @param key
-     * @param value
+     * @param {string} key
+     * @param {string} value
      */
     static setVariable(key, value) {
-        this._variables[key] = value;
+        this._variables[key] = value.toString();
     }
 
+    /**
+     * Gets a named variable value by its key.
+     *
+     * @param {string} key
+     * @return {string} value
+     */
     static getVariable(key) {
         return this._variables[key];
     }

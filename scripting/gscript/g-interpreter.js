@@ -36,6 +36,8 @@ class GInterpreter extends Interpreter {
         let literalInEscapeSequence = false;
         let literalOpenChar = null;
 
+        let readingVariable = false;
+
         let currentInstructionComponents = [];
         let interpretingInstruction = false;
 
@@ -108,6 +110,12 @@ class GInterpreter extends Interpreter {
             literalOpenChar = null;
         };
 
+        let _eatBuffer = function () {
+            let bufferStr = buffer.join('');
+            _finalizeBuffer(false);
+            return bufferStr;
+        };
+
         let _finalizeInstructionToExec = function (conditional) {
             let execReturnValue = false;
 
@@ -147,7 +155,36 @@ class GInterpreter extends Interpreter {
                 }
             }
 
-            if (readingLiteral) {
+            if (readingVariable) {
+                // MODE: Reading a variable name literal until we encounter a variable-breaking char (space, semicolon)
+                if (char === GInterpreter.T_SPACE || char === GInterpreter.T_INSTRUCTION_END) {
+                    // End of variable reference, break out of read mode and gather data
+                    readingLiteral = false;
+
+                    let variableName =  _eatBuffer();
+
+                    // Check reference and get variable value
+                    let variablePrefix = GInterpreter.T_VARIABLE_INDICATOR;
+                    let variableValue = GExecutor.getVariable(variableName);
+
+                    if (typeof variableValue === "undefined") {
+                        throw new Error(`Reference error. Referenced variable ${variablePrefix}${variableName} is not defined.`);
+                    }
+
+                    // Insert the variable as a literal in the call we are preparing
+                    currentInstructionComponents.push(variableValue);
+
+                    // If the character also happened
+                    let forceInstructionEnd = (char === GInterpreter.T_INSTRUCTION_END);
+
+                    if (forceInstructionEnd) {
+                        _finalizeInstructionToExec();
+                    }
+
+                    continue;
+                }
+            }
+            else if (readingLiteral) {
                 // MODE: Reading a string literal until we encounter a termination char (unescaped quotes)
                 if (literalInEscapeSequence) {
                     // Do not interpret this character
@@ -244,6 +281,16 @@ class GInterpreter extends Interpreter {
                 } else if (char === GInterpreter.T_SPACE) {
                     // SPACE CHAR: Separates a parameter or instruction component
                     _finalizeBuffer(true);
+                    continue;
+                } else if (char === GInterpreter.T_VARIABLE_INDICATOR) {
+                    // VARIABLE PREFIX: Start reading a variable
+                    if (bufferIdx === 0) {
+                        readingVariable = true;
+                    } else {
+                        throw new Error('Syntax error. Unexpected variable declaration.');
+                    }
+
+                    continue;
                 }
             }
 
