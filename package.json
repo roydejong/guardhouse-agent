@@ -17,6 +17,7 @@
   "license": "GPL-3.0+",
   "dependencies": {
     "axios": "^0.16.2",
+    "body-parser": "^1.17.2",
     "config": "^1.26.1",
     "express": "^4.15.3",
     "shelljs": "^0.7.8",

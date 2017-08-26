@@ -1,6 +1,8 @@
 const logging = require('winston-color');
 const config = require('config');
 const express = require('express');
+const bodyParser = require('body-parser');
+
 const endpoints = require('./endpoints');
 
 class Server {
@@ -25,6 +27,7 @@ class Server {
         }
 
         this.express = express();
+        this.express.use(bodyParser.json());
 
         this.initMiddleware();
         this.initEndpoints();
