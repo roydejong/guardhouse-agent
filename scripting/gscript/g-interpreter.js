@@ -106,14 +106,18 @@ class GInterpreter extends Interpreter {
         };
 
         let _finalizeInstructionToExec = function (conditional) {
+            let execReturnValue = false;
+
             if (interpretingInstruction) {
-                _exec(currentInstructionComponents, !!conditional);
+                execReturnValue = _exec(currentInstructionComponents, !!conditional);
             } else {
                 Logger.debug('GScript: EXEC_NOOP_BLANK');
             }
 
             currentInstructionComponents = [];
             interpretingInstruction = false;
+
+            return execReturnValue;
         };
 
         // ----- Begin token parsing -----------------------------------------------------------------------------------
