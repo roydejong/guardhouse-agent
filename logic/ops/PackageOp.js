@@ -12,7 +12,7 @@ class PackageOp extends Op {
         let args = call.args.slice();
 
         if (args.length !== 2) {
-            logging.warn('PackageOp', 'Syntax error. Usage: package [operation] [name]');
+            logging.warn('[PackageOp]', 'Syntax error. Usage: package [operation] [name]');
             return false;
         }
 
@@ -22,7 +22,7 @@ class PackageOp extends Op {
         if (!this.warm) {
             if (!this._warmUp()) {
                 // Cannot perform package management in this env, unsupported
-                logging.error('PackageOp', `Unable to perform package management, leaving package untouched: "${packageName}"`);
+                logging.error('[PackageOp]', `Unable to perform package management, leaving package untouched: "${packageName}"`);
                 return false;
             }
         }
@@ -34,7 +34,7 @@ class PackageOp extends Op {
         } else if (command === PackageOp.COMMAND_UPDATE) {
             return this._executeUpdate(packageName)
         } else {
-            logging.warn('PackageOp', `Unrecognized command: "${command}" for package "${packageName}". Use "${PackageOp.COMMAND_INSTALL}", "${PackageOp.COMMAND_REMOVE}", or "${PackageOp.COMMAND_UPDATE}".`);
+            logging.warn('[PackageOp]', `Unrecognized command: "${command}" for package "${packageName}". Use "${PackageOp.COMMAND_INSTALL}", "${PackageOp.COMMAND_REMOVE}", or "${PackageOp.COMMAND_UPDATE}".`);
             return false;
         }
     }
@@ -46,7 +46,7 @@ class PackageOp extends Op {
 
         if (osPlatform === 'win32') {
             if (!shell.which('choco')) {
-                logging.warn('PackageOp', 'Win32: Installing Chocolatey package manager...');
+                logging.warn('[PackageOp]', 'Win32: Installing Chocolatey package manager...');
 
                 shell.exec(`@"%SystemRoot%\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -NoProfile -InputFormat None -ExecutionPolicy Bypass -Command "iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))"`);
                 shell.exec(`SET "PATH=%PATH%;%ALLUSERSPROFILE%\\chocolatey\\bin"`);
@@ -55,7 +55,7 @@ class PackageOp extends Op {
             if (shell.which('choco')) {
                 this.packageManager = PackageOp.PM_CHOCO;
             } else {
-                logging.error('PackageOp', 'Error: Chocolatey package manager not available / installation failed.');
+                logging.error('[PackageOp]', 'Error: Chocolatey package manager not available / installation failed.');
             }
         } else {
             if (shell.which('apt-get')) {
@@ -64,17 +64,17 @@ class PackageOp extends Op {
         }
 
         if (this.packageManager) {
-            logging.info('PackageOp', 'Using package manager: ' + this.packageManager);
+            logging.info('[PackageOp]', 'Using package manager: ' + this.packageManager);
             this.warm = true;
             return true;
         } else {
-            logging.error('PackageOp', `Unsupported environment for package management / no supported package manager available: ${osPlatform} / ${osRelease}`);
+            logging.error('[PackageOp]', `Unsupported environment for package management / no supported package manager available: ${osPlatform} / ${osRelease}`);
             return false;
         }
     }
 
     static _executeInstall(pkgName) {
-        logging.info('PackageOp', `${this.packageManager} -> Install package "${pkgName}"...`);
+        logging.info('[PackageOp]', `${this.packageManager} -> Install package "${pkgName}"...`);
 
         if (this.packageManager === PackageOp.PM_APT_GET) {
             return shell.exec(`apt-get install ${pkgName} -y`);
@@ -86,7 +86,7 @@ class PackageOp extends Op {
     }
 
     static _executeRemove(pkgName) {
-        logging.info('PackageOp', `${this.packageManager} -> Remove package "${pkgName}"...`);
+        logging.info('[PackageOp]', `${this.packageManager} -> Remove package "${pkgName}"...`);
 
         if (this.packageManager === PackageOp.PM_APT_GET) {
             return shell.exec(`apt-get remove ${pkgName} -y`);
@@ -98,7 +98,7 @@ class PackageOp extends Op {
     }
 
     static _executeUpdate(pkgName) {
-        logging.info('PackageOp', `${this.packageManager} -> Update package "${pkgName}"...`);
+        logging.info('[PackageOp]', `${this.packageManager} -> Update package "${pkgName}"...`);
 
         if (this.packageManager === PackageOp.PM_APT_GET) {
             return shell.exec(`apt-get upgrade ${pkgName} -y`);

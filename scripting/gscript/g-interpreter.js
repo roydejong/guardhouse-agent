@@ -45,16 +45,27 @@ class GInterpreter extends Interpreter {
         let contextIdGenerator = 1;
         let contextIsActive = true;
 
+        let abort = false;
+
         // ----- Internal helper functions -----------------------------------------------------------------------------
         let _exec = function (instr, conditional) {
             // Execute
-            let returnValue = GExecutor.executeCommand(instr);
+            let execResult = GExecutor.executeCommand(instr);
 
             // Debug log
             let logPrefix = (contextIsActive ? (conditional ? 'EXEC/C' : 'EXEC') : 'EXEC/SKIP');
             let logCall = JSON.stringify(instr);
-            logging.debug(`GScript ${logPrefix}: ${logCall} -> RET ${returnValue}`);
-            return returnValue;
+
+            logging.debug(`GScript ${logPrefix}: ${logCall} -> RET ${execResult}`);
+
+            if (execResult.abortExecution) {
+                logging.warn('GScript: Abort script execution');
+                abort = true;
+                return;
+            }
+
+            // Return result value as a boolean
+            return !!execResult;
         };
 
         let _getJoinedBuffer = function () {
@@ -94,6 +105,10 @@ class GInterpreter extends Interpreter {
 
         // ----- Begin token parsing -----------------------------------------------------------------------------------
         for (let i = 0; i < scriptText.length; i++) {
+            if (abort) {
+                break;
+            }
+
             let char = scriptText[i];
             let lastChar = null;
 
@@ -218,7 +233,7 @@ class GInterpreter extends Interpreter {
         }
 
         // ----- Evaluate state ----------------------------------------------------------------------------------------
-        if ((buffer.length || interpretingInstruction) && !readingComment) {
+        if ((buffer.length || interpretingInstruction) && !readingComment && !abort) {
             // Buffer is not empty, that means certain characters were not interpreted by us
 
             // To clarify: After we process an instruction, we call "_finalizeBuffer" which emptes it.

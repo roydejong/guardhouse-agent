@@ -40,7 +40,6 @@ class Interpreters {
      * @returns {Interpreter}
      */
     static getInstance (interpreterId) {
-        console.log(this.ids);
         if (!Interpreters.isValid(interpreterId)) {
             logging.error('Cannot create interpreter instance, not implemented in this agent build:', interpreterId);
             return null;

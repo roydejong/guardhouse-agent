@@ -1,6 +1,7 @@
 const logging = require('winston-color');
 
 const GCall = require('./g-call');
+const GResult = require('./g-result');
 const Op = require('../../logic/Op');
 
 /**
@@ -12,6 +13,7 @@ class GExecutor {
      */
     static init() {
         this.ops = require('../../logic/index').ops;
+        this.errorMode = GExecutor.ERROR_MODE_NORMAL;
     }
 
     /**
@@ -71,7 +73,7 @@ class GExecutor {
      * Executes a GScript instruction.
      *
      * @param {array} callComponents        Array of call components: [0] contains the Op name, other values are args.
-     * @return {*}                          Function return value. Returns FALSE if execution is not possible.
+     * @return {GResult}                    Result information in GResult struct.
      */
     static executeCommand(callComponents) {
         callComponents = callComponents.slice(); // copy; do not modify input
@@ -79,15 +81,34 @@ class GExecutor {
         let opName = callComponents.shift();
         let opInstance = GExecutor.resolveCommand(opName);
 
+        let result = new GResult();
+
         if (opInstance) {
             let callData = new GCall(opName, callComponents, this);
-            return opInstance.execute(callData);
+            let returnValue = opInstance.execute(callData);
+
+            result.opRan = opName;
+            result.opResult = returnValue;
+
+            if (this.errorMode === GExecutor.ERROR_MODE_NORMAL) {
+                // Normal error mode: Abort execution if return value evaluates to false.
+                result.abortExecution = !returnValue;
+            }
         }
 
-        return false;
+        return result;
     }
 }
 
-GExecutor.init();
+/**
+ * In "normal" error handling mode, all errors are logged and script execution is aborted on failure.
+ */
+GExecutor.ERROR_MODE_NORMAL = 'normal';
+/**
+ * In "continue" error handling mode, all errors are logged but execution is never aborted.
+ */
+GExecutor.ERROR_MODE_CONTINUE = 'continue';
 
+// Self init & export
+GExecutor.init();
 module.exports = GExecutor;
