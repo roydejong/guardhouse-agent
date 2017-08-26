@@ -8,7 +8,11 @@ fs.readdirSync(normalizedPath).forEach(function (file) {
     let nextOp = require('./ops/' + file);
     let nextOpId = nextOp.id;
 
-    opsList[nextOpId] = nextOp;
+    if (!opsList[nextOpId]) {
+        opsList[nextOpId] = [];
+    }
+
+    opsList[nextOpId].push(nextOp);
 });
 
 module.exports = {
