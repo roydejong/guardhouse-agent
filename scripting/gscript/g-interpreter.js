@@ -49,23 +49,27 @@ class GInterpreter extends Interpreter {
 
         // ----- Internal helper functions -----------------------------------------------------------------------------
         let _exec = function (instr, conditional) {
+            // Debug log
+            let logPrefix = (contextIsActive ? (conditional ? 'EXEC/CONDITIONAL' : 'EXEC') : 'EXEC/SKIP');
+            let logCall = JSON.stringify(instr);
+
+            logging.debug(`GScript ${logPrefix}: ${logCall}`);
+
             // Execute
             let execResult = GExecutor.executeCommand(instr);
 
-            // Debug log
-            let logPrefix = (contextIsActive ? (conditional ? 'EXEC/C' : 'EXEC') : 'EXEC/SKIP');
-            let logCall = JSON.stringify(instr);
-
-            logging.debug(`GScript ${logPrefix}: ${logCall} -> RET ${execResult}`);
-
             if (execResult.abortExecution) {
+                if (conditional) {
+                    // Conditional abort: Treat as "ignore the block"
+                    return false;
+                }
+
                 logging.warn('GScript: Abort script execution');
                 abort = true;
                 return;
             }
 
-            // Return result value as a boolean
-            return !!execResult;
+            return !!execResult.opResult;
         };
 
         let _getJoinedBuffer = function () {
