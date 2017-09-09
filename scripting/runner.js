@@ -28,13 +28,12 @@ class Runner {
         }
 
         // Execute on the interpreter
-        logging.info(`Scripting: Running recipe ${recipe.identifier} (${recipe.interpreter})...`);
+        logging.info(`Scripting: Running recipe ${recipe.identifier} (${recipe.interpreter})`);
 
         let execResult = false;
 
         try {
-            interpreterObj.run(recipe.text);
-            logging.info(`Scripting: OK - Script execution completed.`);
+            interpreterObj.run(recipe.text); // TODO Handle results normally. Interpreters should eventually all be async. GScript currently isn't; bash, cmd & powershell are.
 
             execResult = true;
         } catch (e) {

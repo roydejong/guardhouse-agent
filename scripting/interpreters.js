@@ -1,6 +1,7 @@
 const logging = require('winston-color');
 
 const gscript = require('./gscript');
+const bash = require('./bash');
 
 class Interpreters {
     static get list() {
@@ -57,6 +58,8 @@ class Interpreters {
 }
 
 Interpreters.INTERPRETER_GUARDSCRIPT = gscript.GInterpreter;
+Interpreters.INTERPRETER_BASH = bash.BashInterpreter;
+Interpreters.INTERPRETER_CMD = bash.BashInterpreter;
 Interpreters.DEFAULT = Interpreters.ids[0];
 
 module.exports = Interpreters;
