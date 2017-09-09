@@ -146,6 +146,8 @@ class GExecutor {
         let result = new GResult();
 
         if (opInstance) {
+            // Command found; run mode
+
             let callData = new GCall(opName, callComponents, this);
             let returnValue = opInstance.execute(callData);
 
@@ -154,6 +156,13 @@ class GExecutor {
 
             if (this.errorMode === GExecutor.ERROR_MODE_NORMAL) {
                 // Normal error mode: Abort execution if return value evaluates to false.
+                result.abortExecution = !returnValue;
+            }
+        } else {
+            // Command not found
+
+            if (this.errorMode === GExecutor.ERROR_MODE_NORMAL) {
+                // Normal error mode: Abort execution if command failed.
                 result.abortExecution = !returnValue;
             }
         }
