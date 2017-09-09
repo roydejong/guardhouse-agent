@@ -15,5 +15,9 @@
     },
     "security": {
         "allow_root": false
+    },
+    "powershell": {
+        "execution_policy": "ByPass",
+        "file_extension": ".ps1"
     }
 }

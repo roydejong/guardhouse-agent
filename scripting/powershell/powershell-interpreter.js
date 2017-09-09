@@ -3,6 +3,7 @@ const spawn = require("child_process").spawn;
 const tmp = require('tmp');
 const logging = require('winston-color');
 const shell = require('shelljs');
+const config = require('config');
 
 class PowershellInterpreter extends Interpreter {
     static get id() {
@@ -19,7 +20,7 @@ class PowershellInterpreter extends Interpreter {
         // Create a temporary PS1 script file for us
         let tmpFileOptions = {
             prefix: 'gh-',
-            postfix: '.ps1'
+            postfix: config.get('powershell.file_extension')
         };
 
         tmp.file(tmpFileOptions, (err, path, fd, cleanupCallback) => {
@@ -30,14 +31,22 @@ class PowershellInterpreter extends Interpreter {
             logging.debug('[Powershell]', 'Created a script file:', path);
 
             // Create a child process for powershell.exe runtime
-            let psProcess = spawn("powershell.exe", [`-ExecutionPolicy`, `ByPass`, `-File`, `${path}`]);
+            let psProcess = spawn("powershell.exe", [`-ExecutionPolicy`, config.get('powershell.execution_policy'), `-File`, `${path}`]);
 
             psProcess.stdout.on("data", function (data) {
-                logging.info('[Powershell]', 'stdout:', data.toString('utf8'));
+                let output = data.toString('utf8').trim();
+
+                if (output) {
+                    logging.info('[Powershell]', 'stdout:', output);
+                }
             });
 
             psProcess.stderr.on("data", function (data) {
-                logging.error('[Powershell]', 'stderr:', data.toString('utf8'));
+                let output = data.toString('utf8').trim();
+
+                if (output) {
+                    logging.error('[Powershell]', 'stderr:', output);
+                }
             });
 
             psProcess.on("exit", function () {
