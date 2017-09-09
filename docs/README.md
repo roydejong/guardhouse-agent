@@ -1,3 +1,11 @@
+# Agent documentation
+
+This is an overview of documentation topics available for the agent.
+
+## Management
+
+* [Creating a systemd service](management/creating-systemd-service.md)
+
 ## Scripting
 
 **Recipes** are reusable scripts that can be executed by the agent. They are pushed by the Guardhouse server, and managed from its control panel.
