@@ -7,6 +7,8 @@
     <orderEntry type="module-library">
       <library name="PHP" type="php">
         <CLASSES>
+          <root url="file://$USER_HOME$/guardhouse-server/vendor/chrisboulton/php-resque" />
+          <root url="file://$USER_HOME$/guardhouse-server/vendor/colinmollenhour/credis" />
           <root url="file://$USER_HOME$/guardhouse-server/vendor/composer" />
           <root url="file://$USER_HOME$/guardhouse-server/vendor/filp/whoops" />
           <root url="file://$USER_HOME$/guardhouse-server/vendor/instasell/framework" />
@@ -28,6 +30,8 @@
           <root url="file://$USER_HOME$/guardhouse-server/vendor/twig/twig" />
         </CLASSES>
         <SOURCES>
+          <root url="file://$USER_HOME$/guardhouse-server/vendor/chrisboulton/php-resque" />
+          <root url="file://$USER_HOME$/guardhouse-server/vendor/colinmollenhour/credis" />
           <root url="file://$USER_HOME$/guardhouse-server/vendor/composer" />
           <root url="file://$USER_HOME$/guardhouse-server/vendor/filp/whoops" />
           <root url="file://$USER_HOME$/guardhouse-server/vendor/instasell/framework" />
