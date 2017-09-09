@@ -6,6 +6,8 @@
 
 📖 **[Agent documentation](docs/README.md)**
 
+🌐 **We live on [Github](https://github.com/roydejong/guardhouse-agent) and [npm](https://www.npmjs.com/package/guardhouse-agent)**
+
 ## Introduction
 
 The agent communicates with the Guardhouse Service, where it gets its instructions.
