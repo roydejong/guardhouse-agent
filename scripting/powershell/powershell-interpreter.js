@@ -4,6 +4,7 @@ const tmp = require('tmp');
 const logging = require('winston-color');
 const shell = require('shelljs');
 const config = require('config');
+const fs = require('fs');
 
 class PowershellInterpreter extends Interpreter {
     static get id() {
@@ -20,7 +21,8 @@ class PowershellInterpreter extends Interpreter {
         // Create a temporary PS1 script file for us
         let tmpFileOptions = {
             prefix: 'gh-',
-            postfix: config.get('powershell.file_extension')
+            postfix: config.get('powershell.file_extension'),
+            discardDescriptor: true // NB: Detach seems needed to prevent "file in use" err in PS
         };
 
         tmp.file(tmpFileOptions, (err, path, fd, cleanupCallback) => {
@@ -30,33 +32,40 @@ class PowershellInterpreter extends Interpreter {
 
             logging.debug('[Powershell]', 'Created a script file:', path);
 
-            // Create a child process for powershell.exe runtime
-            let psProcess = spawn("powershell.exe", [`-ExecutionPolicy`, config.get('powershell.execution_policy'), `-File`, `${path}`]);
-
-            psProcess.stdout.on("data", function (data) {
-                let output = data.toString('utf8').trim();
-
-                if (output) {
-                    logging.info('[Powershell]', 'stdout:', output);
+            // Write script to the temporary file
+            fs.writeFile(path, scriptText, (err2) => {
+                if (err2) {
+                    throw err2;
                 }
+
+                // Create a child process for powershell.exe runtime
+                let psProcess = spawn("powershell.exe", [`-ExecutionPolicy`, config.get('powershell.execution_policy'), `-File`, `${path}`]);
+
+                psProcess.stdout.on("data", function (data) {
+                    let output = data.toString('utf8').trim();
+
+                    if (output) {
+                        logging.info('[Powershell]', 'stdout:', output);
+                    }
+                });
+
+                psProcess.stderr.on("data", function (data) {
+                    let output = data.toString('utf8').trim();
+
+                    if (output) {
+                        logging.error('[Powershell]', 'stderr:', output);
+                    }
+                });
+
+                psProcess.on("exit", function () {
+                    logging.debug('[Powershell]', 'Script has exited.');
+
+                    // Destroy the script file
+                    cleanupCallback();
+                });
+
+                psProcess.stdin.end();
             });
-
-            psProcess.stderr.on("data", function (data) {
-                let output = data.toString('utf8').trim();
-
-                if (output) {
-                    logging.error('[Powershell]', 'stderr:', output);
-                }
-            });
-
-            psProcess.on("exit", function () {
-                logging.debug('[Powershell]', 'Script has exited.');
-
-                // Destroy the script file
-                cleanupCallback();
-            });
-
-            psProcess.stdin.end();
         });
     }
 }
