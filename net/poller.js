@@ -3,6 +3,7 @@ const config = require('config');
 const axios = require('axios');
 const apiUrl = require('./remote/api-url');
 const selfReg = require('./remote/server-registration');
+const TaskProcessor = require('./task-processor');
 
 class Poller {
     static start() {
@@ -44,6 +45,8 @@ class Poller {
                     selfReg.perform();
                     return;
                 }
+
+                TaskProcessor.handleTask(response.data);
             })
             .catch((error) => {
                 logging.error('Poller: Pull from server failed:', error.message);
@@ -55,3 +58,4 @@ Poller.MIN_INTERVAL = 60;
 Poller.DEFAULT_INTERVAL = Poller.MIN_INTERVAL;
 
 module.exports = Poller;
+global.xPoller = Poller; // TODO wtf is going on?

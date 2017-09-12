@@ -2,10 +2,9 @@ const logging = require('winston-color');
 const config = require('config');
 const axios = require('axios');
 const sysinfo = require('systeminformation');
-
 const apiUrl = require('./api-url');
-
 const server = require('../server');
+const poller = require('../poller');
 
 class ServerRegistration {
     static perform() {
@@ -48,6 +47,8 @@ class ServerRegistration {
                         server.setServerToken(newServerToken);
                     }
                 }
+
+                xPoller.poll(); // TODO wtf is going on?
             })
             .catch(function (error) {
                 logging.error('Remote: Failed to register with Guardhouse server:', error.message);
