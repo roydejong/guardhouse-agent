@@ -12,13 +12,15 @@ This will prepare the agent for use, and link the `/usr/bin/guardhouse-agent` bi
 
 ## Configuration
 
-Next, you will need to locate the installation directory for the global package. By default the path is `/usr/lib/node_modules/guardhouse-agent`. We'll use this is a working directory for the service.
+Next, you will need to locate the installation directory for the global package. By default the path is `/usr/lib/node_modules/guardhouse-agent`. For this example, we'll use this as the working directory for the service.
 
 Create your configuration file in the `config` directory. The filename of your configuration file must match the `NODE_ENV` used in the service definition later.
 
 For example, you can use the default file as a template (where `live` will be the name of your `NODE_ENV`):
 
     cp config/default.json config/live.json
+    
+⚠️ Updating the agent will cause npm to clear all files from the installation directory, including your config and log files. Consider using a custom working directory.   
     
 ## Service file
 
@@ -43,22 +45,38 @@ Fill the contents of the file using the following template:
     
 ⚠️ You will need to make sure the `NODE_ENV` value matches that of your configuration file, and that all referenced paths match the ones on your system.
 
-We highly recommend creating a separate user for the guardhouse agent to run under so that you can fine-tune permissions. 
+⚠️ We highly recommend creating a separate user for the guardhouse agent to run under so that you can fine-tune permissions.
 
-## Service installation
+## Service control
+
+### Installation
 
 To install and enable the service, enter:
 
     systemctl enable guardhouse-agent.service
+   
+This will also cause the agent to automatically start with the system.
+    
+### Management
     
 You can check the status and recent log output as follows:
 
     systemctl status guardhouse-agent.service
     
-The regular service commands are now available to you:
+The regular service commands are also available, and are pretty self-explanatory:
     
     systemctl start guardhouse-agent.service
     systemctl stop guardhouse-agent.service
     systemctl restart guardhouse-agent.service
     
+## Troubleshooting
 
+### Service log output on error
+
+If the service fails, it can be difficult to recover the cause through the service's `status` command.
+
+You can view the service's full output (all `stdout` and `stderr` generated while the service was running) by issuing the following command:
+
+     journalctl -u guardhouse-agent
+     
+ Where `guardhouse-agent` is the name of the service unit.
