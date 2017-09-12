@@ -5,31 +5,34 @@ const Axios = require('axios');
 
 class TaskProcessor {
     static handleTask(taskData) {
-        let taskId = taskData.task_id;
+        return new Promise((resolve, reject) => {
+            let taskId = taskData.task_id;
 
-        if (!taskId) {
-            Logging.error('TaskProcessor:', '[dispatch]', `Missing task ID, ignoring task run request. (Bad data from server?)`);
-            return false;
-        }
+            if (!taskId) {
+                Logging.error('TaskProcessor:', '[dispatch]', `Missing task ID, ignoring task run request. (Bad data from server?)`);
+                reject("Invalid task payload");
+                return;
+            }
 
-        TaskProcessor.reportTaskStatus(taskId, TaskProcessor.STATUS_RUNNING);
+            TaskProcessor.reportTaskStatus(taskId, TaskProcessor.STATUS_RUNNING);
 
-        let runResult = false;
+            let runResult = false;
 
-        if (taskData.type === 'recipe') {
-            runResult = this._handleRecipeTask(taskData.data);
-        } else {
-            Logging.warn('TaskProcessor:', '[dispatch]', `Unknown type of task received: ${taskData.type}`);
-        }
+            if (taskData.type === 'recipe') {
+                runResult = this._handleRecipeTask(taskData.data);
+            } else {
+                Logging.warn('TaskProcessor:', '[dispatch]', `Unknown type of task received: ${taskData.type}`);
+            }
 
-        if (!runResult) {
-            TaskProcessor.reportTaskStatus(taskId, TaskProcessor.STATUS_RUN_FAILED);
-            return false;
-        }
+            if (!runResult) {
+                TaskProcessor.reportTaskStatus(taskId, TaskProcessor.STATUS_RUN_FAILED);
+                reject("Run failed / task start error");
+                return;
+            }
 
-
-        TaskProcessor.reportTaskStatus(taskId, TaskProcessor.STATUS_RUN_OK);
-        return true;
+            TaskProcessor.reportTaskStatus(taskId, TaskProcessor.STATUS_RUN_OK);
+            resolve();
+        });
     }
 
     static _handleRecipeTask(recipeData) {

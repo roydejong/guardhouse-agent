@@ -46,7 +46,20 @@ class Poller {
                     return;
                 }
 
-                TaskProcessor.handleTask(response.data);
+                if (response.data.state === 'no_pending_tasks') {
+                    // Nothing to do right now
+                } else if (response.data.state === 'next_task') {
+                    // Handle a task
+                    TaskProcessor.handleTask(response.data)
+                        .then(function () {
+                            // Keep handling tasks until we hit "no_pending_tasks"
+                            Poller.poll();
+                        })
+                        .catch(function () {
+                            // Keep handling tasks until we hit "no_pending_tasks"
+                            Poller.poll();
+                        });
+                }
             })
             .catch((error) => {
                 logging.error('Poller: Pull from server failed:', error.message);
