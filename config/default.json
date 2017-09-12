@@ -11,7 +11,8 @@
         "port": "3012"
     },
     "logging": {
-        "path": "agent.log"
+        "path": "agent.log",
+        "level": "info"
     },
     "security": {
         "allow_root": false

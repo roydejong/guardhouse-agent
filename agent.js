@@ -29,7 +29,7 @@ if (loggingConfig.path) {
     try {
         logging.add(winston.transports.File, {
             filename: loggingConfig.path,
-            level: 'info',
+            level: config.get('logging.level'),
             json: false
         });
 
@@ -38,6 +38,8 @@ if (loggingConfig.path) {
         logging.error('Unable to prepare log file:', e);
     }
 }
+
+logging.transports.console.level = config.get('logging.level');
 
 logging.info('Guardhouse Agent is starting...');
 
