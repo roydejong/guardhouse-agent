@@ -93,7 +93,7 @@ if (!serverUrl || !clientToken || clientToken.length < 8) {
     abortStart = true;
 }
 
-if (!config.get('guardhouse.allow_unsafe') && !serverUrl.indexOf('https://') !== 0) {
+if (!config.get('guardhouse.allow_unsafe') && serverUrl.indexOf('https://') !== 0) {
     logging.error('Configuration problem: Invalid target server: must start with "https://".');
     logging.error(' - HTTPS is highly recommended. To skip this check (for example, in a testing environment), set config variable "guardhouse.allow_unsafe" to true.');
     
